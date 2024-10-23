@@ -1,0 +1,9 @@
+<div class="post-list">
+    <div class="post-item">
+        <% @posts.each do |post| %>
+            <%= link_to post do %>
+                <p><%= safe_join(post.content.split("\n"),tag(:br)) %></p>
+            <% end %>
+        <% end %>
+    </div>
+</div>

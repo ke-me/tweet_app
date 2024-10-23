@@ -1,0 +1,8 @@
+<p>投稿フォーム</p>
+<%= form_with model: @post do |form| %>
+    <div>
+        <%= form.label :content, "投稿内容" %>
+        <%= form.text_area :content %>
+    </div>
+    <%= form.submit "投稿" %>
+<% end %>
