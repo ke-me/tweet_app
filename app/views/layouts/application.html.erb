@@ -16,9 +16,22 @@
   <ul>
   <li><%= link_to "TOP", root_path %></li>
   <li><%= link_to "投稿する", new_post_path %></li>
+  <li><%= link_to "新規登録", new_user_path %></li>
+  <li><%= link_to "ユーザー一覧", users_path %></li>
   </ul>
   </nav>
   </header>
+    <% flash.each do |key, message| %>
+    <div id="flash-message">
+      <% if message.is_a?(Array) %>
+        <% message.each do |msg| %>
+          <p class="<%= key %>"><%= msg %></p>
+        <% end %>
+      <% else %>
+          <p class="<%= key %>"><%= message %></p>
+      <% end %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
