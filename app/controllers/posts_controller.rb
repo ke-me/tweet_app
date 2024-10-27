@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :destroy]
+  before_action :ensure_correct_user, only: [:destroy]
   def index
     @posts = Post.all
   end
@@ -13,6 +14,8 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
+    @post.user_id = current_user.id # current_userのIDを設定
+  
 
     if @post.save
       flash[:success] = "投稿しました"
@@ -36,5 +39,13 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:content)
+  end
+
+  def ensure_correct_user
+    @post = Post.find(params[:id])
+    if @post.user_id != current_user.id
+      flash[:notice] = "権限がありません"
+      redirect_to @post
+    end
   end
 end

@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_user, except: [:index, :show, :new, :create]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
   def index
     @users = User.all
   end
@@ -16,6 +18,7 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:success] = "登録しました"
+      log_in @user
       redirect_to root_path
     else
       flash[:errors] = @user.errors.full_messages
@@ -50,5 +53,12 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password)
+  end
+
+  def require_same_user
+    if current_user != @user
+      flash[:alert] = "許可されていない操作です。プロフィールの編集、削除は作成者ご自身のみ可能です。"
+      redirect_to @user
+    end
   end
 end

@@ -2,7 +2,7 @@
     <div class="post-item">
         <% @posts.each do |post| %>
             <%= link_to post do %>
-                <p><%= safe_join(post.content.split("\n"),tag(:br)) %></p>
+                <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
             <% end %>
         <% end %>
     </div>

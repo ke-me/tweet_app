@@ -1,4 +1,4 @@
-<p>ユーザー登録</p>
+<p>ログイン</p>
 <%= form_with model: @user do |form| %>
     <div>
         <%= form.label :name, "ユーザー名" %>
@@ -12,9 +12,5 @@
         <%= form.label :password, "パスワード" %>
         <%= form.password_field :password %>
     </div>
-    <div>
-        <%= form.label :password_confirmation, "パスワード（確認）" %>
-        <%= form.password_field :password_confirmation %>
-    </div>
-    <%= form.submit "登録" %>
+    <%= form.submit "ログイン" %>
 <% end %>
