@@ -3,6 +3,7 @@
         <% @posts.each do |post| %>
             <%= link_to post do %>
                 <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
+                    <img src="/user_images/<%= post.user.image_name %>" width="80" />
             <% end %>
         <% end %>
     </div>

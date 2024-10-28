@@ -15,8 +15,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.image_name = "default_user.jpg"
 
     if @user.save
+      if params[:user][:image_name]
+        # @user.image_name = "#{@user.id}.jpg"
+        @user.update(image_name: "#{@user.id}.jpg")
+        File.binwrite("public/user_images/#{@user.image_name}",params[:user][:image_name].read)
+        @user.save
+      end
+
       flash[:success] = "登録しました"
       log_in @user
       redirect_to root_path
@@ -52,7 +60,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :image_name)
   end
 
   def require_same_user

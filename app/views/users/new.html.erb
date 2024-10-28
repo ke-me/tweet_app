@@ -9,6 +9,10 @@
         <%= form.text_field :email %>
     </div>
     <div>
+        <%= form.label :image_name, "アイコン画像" %>
+        <%= form.file_field :image_name %>
+    </div>
+    <div>
         <%= form.label :password, "パスワード" %>
         <%= form.password_field :password %>
     </div>
