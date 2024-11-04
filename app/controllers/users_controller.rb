@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :require_user, except: [:index, :show, :new, :create]
   before_action :require_same_user, only: [:edit, :update, :destroy]
+  before_action :user_liked, only: [:show]
   def index
     @users = User.all
   end
@@ -69,4 +70,10 @@ class UsersController < ApplicationController
       redirect_to @user
     end
   end
+
+  def user_liked
+    liked = Like.where(user_id: @user.id).pluck(:post_id)
+    @like_posts = Post.where(id: liked)
+  end
+
 end

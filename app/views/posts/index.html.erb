@@ -1,10 +1,25 @@
 <div class="post-list">
     <div class="post-item">
         <% @posts.each do |post| %>
-            <%= link_to post do %>
-                <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
-                    <img src="/user_images/<%= post.user.image_name %>" width="80" />
+
+                <%= link_to post do %>
+                    <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
+                        <img src="/user_images/<%= post.user.image_name %>" width="80" />
+                <% end %>
+            <% if post.user_id != current_user.id %>
+                <% if like = post.likes.find_by(user_id: current_user.id) %>
+                    <%= link_to post_like_path(post_id: post.id, id: like.id), data: { "turbo-method": :delete } do %>
+                        <span>❤️</span>
+                    <% end %>
+                <% else %>
+                    <%= link_to post_likes_path(post.id), data: { "turbo-method": :post } do %>
+                        <span>♡</span>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <span>♡</span>
             <% end %>
+            <span><%= Like.where(post_id: post.id).count %></span>
         <% end %>
     </div>
 </div>
