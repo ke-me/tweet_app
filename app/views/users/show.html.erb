@@ -1,6 +1,9 @@
-<p><%= @user.name %></p>
-<p><%= @user.email %></p>
-<img src="/user_images/<%= @user.image_name %>" width="80" />
+<div class="user-iconWrap u-mb40">
+<div class="user-icon">
+    <img src="/user_images/<%= @user.image_name %>?t=<%= current_user.updated_at.to_i %>" width="80" />
+</div>
+<p class="user-name">@<%= @user.name %></p>
+</div>
 <% if logged_in? && @user == current_user %>
 <div><%= link_to "編集", edit_user_path %></div>
 <div><%= link_to "削除", user_path(@user), data: { turbo_method: :delete } %></div>

@@ -1,0 +1,49 @@
+@import "setting";
+
+body {
+  background-color: $color_gy;
+  margin: 120px 0;
+  font-size: 14px;
+}
+
+h1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 24px;
+  color: $color_bk;
+  font-weight: 700;
+  padding: 24px;
+}
+
+.header {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 100;
+}
+
+.header-list {
+  li {
+    background-color: $color_bk;
+    &:not(:last-child) {
+      margin-bottom: 14px;
+    }
+  }
+
+  a {
+    padding: 2px 16px;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    color: $color_wh;
+  }
+}
+
+main {
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+  padding-left: 80px;
+  padding-right: 80px;
+}

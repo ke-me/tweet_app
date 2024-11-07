@@ -1,0 +1,25 @@
+@import "setting";
+
+.user-iconWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-icon {
+  aspect-ratio: 1/1;
+  width: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 8px;
+  img {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+}
+
+.user-name {
+  color: $color_bl;
+  font-size: 12px;
+}

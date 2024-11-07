@@ -40,8 +40,14 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
+      if params[:user][:image_name]
+        # @user.image_name = "#{@user.id}.jpg"
+        @user.update(image_name: "#{@user.id}.jpg")
+        File.binwrite("public/user_images/#{@user.image_name}",params[:user][:image_name].read)
+        @user.save
+      end
       flash[:success] = "アカウント情報を更新しました"
-      redirect_to users_path
+      redirect_to users_path(@user, updated_at: Time.current.to_i)
     else
       flash[:errors] = @user.errors.full_messages
       redirect_to action: :edit

@@ -3,4 +3,5 @@ class Like < ApplicationRecord
   validates :post_id, presence: true
   belongs_to :user
   belongs_to :post
+  # belongs_to :post_comment
 end
