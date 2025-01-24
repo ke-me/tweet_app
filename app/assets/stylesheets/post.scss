@@ -1,9 +1,39 @@
 @import "setting";
 
-.post-item {
-  background-color: $color_wh;
+.common-post-item {
   border-radius: 5px;
   padding: 8px;
+}
+
+.common-post-btn {
+  background-color: $color_bk;
+  color: $color_wh;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.common-linkWrap {
+  display: flex;
+  gap: 4px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+}
+
+.common-link-delete {
+  color: $color_gy_50;
+  border-bottom: solid 1px currentColor;
+}
+
+.common-link-edit {
+  color: $color_bl;
+  border-bottom: solid 1px currentColor;
+}
+
+.post-item {
+  background-color: $color_wh;
   position: relative;
   &:not(:last-child) {
     margin-bottom: 24px;
@@ -14,11 +44,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 40px;
+  gap: 20px;
 }
 
 .post-txtWrap {
   width: 100%;
+  padding: 4px 8px;
 }
 
 .post-bottom {
@@ -27,4 +58,45 @@
   right: 8px;
   display: flex;
   gap: 8px;
+}
+
+// コメント=====================================
+.comment-item {
+  background-color: rgba($color_wh, 0.6);
+  position: relative;
+  margin-left: 60px;
+  margin-bottom: 24px;
+  &:before,
+  &:after {
+    position: absolute;
+    left: -30px;
+    content: "";
+    background-color: $color_gy_50;
+    bottom: 50%;
+    z-index: -1;
+  }
+  &:before {
+    width: 1px;
+    height: calc(100% + 24px);
+  }
+
+  &:after {
+    width: 30px;
+    height: 1px;
+  }
+}
+
+.comment-area label {
+  display: block;
+  margin-bottom: 4px;
+  color: $color_gy_50;
+  font-size: 12px;
+}
+
+.comment-area textarea {
+  width: 100%;
+  border: solid 1px $color_gy_50;
+  margin-bottom: 8px;
+  min-height: 80px;
+  padding: 8px;
 }

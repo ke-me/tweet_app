@@ -2,9 +2,9 @@ class LikesController < ApplicationController
 
   def create
     post = Post.find(params[:post_id])
-    if post.user_id != current_user.id
+    if post.user_id != current_user&.id
     @like = Like.new(
-      user_id: current_user.id,
+      user_id: current_user&.id,
       post_id: params[:post_id]
     )
     @like.save

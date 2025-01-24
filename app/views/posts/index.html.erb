@@ -1,31 +1,35 @@
 <div class="post-list">
     <% @posts.each do |post| %>
-    <div class="post-item">
+    <div class="post-item common-post-item">
         <div class="post-content">
             <%= link_to user_path(post.user), class: 'user-iconWrap' do %>
-                <div class="user-icon">
-                    <img src="/user_images/<%= post.user.image_name %>?t=<%= current_user.updated_at.to_i %>" width="80" />
-                </div>
-                <p class="user-name">@<%= post.user.name %></p>
+            <div class="user-icon">
+                <img src="/user_images/<%= post.user.image_name %>?t=<%= current_user&.updated_at.to_i %>" width="80" />
+
+            </div>
+            <p class="user-name">@<%= post.user.name %></p>
             <% end %>
             <%= link_to post, class: 'post-txtWrap' do %>
-                <p class="post-txt"><%= safe_join(post.content.split("\n"),tag(:br)) %></p>
+            <p class="post-txt"><%= safe_join(post.content.split("\n"),tag(:br)) %></p>
             <% end %>
         </div>
+
+
+
         <div class="post-bottom">
             <div class="post-like">
-                <% if post.user_id != current_user.id %>
-                    <% if like = post.likes.find_by(user_id: current_user.id) %>
-                        <%= link_to post_like_path(post_id: post.id, id: like.id), data: { "turbo-method": :delete } do %>
-                            <span><i class="fa-solid fa-heart"></i></span>
-                        <% end %>
-                    <% else %>
-                        <%= link_to post_likes_path(post.id), data: { "turbo-method": :post } do %>
-                            <span><i class="fa-regular fa-heart"></i></span>
-                        <% end %>
-                    <% end %>
+                <% if post&.user_id != current_user&.id %>
+                <% if like = post.likes.find_by(user_id: current_user&.id) %>
+                <%= link_to post_like_path(post_id: post.id, id: like.id), data: { "turbo-method": :delete } do %>
+                <span><i class="fa-solid fa-heart"></i></span>
+                <% end %>
                 <% else %>
-                    <span><i class="fa-regular fa-heart"></i></span>
+                <%= link_to post_likes_path(post.id), data: { "turbo-method": :post } do %>
+                <span><i class="fa-regular fa-heart"></i></span>
+                <% end %>
+                <% end %>
+                <% else %>
+                <span><i class="fa-regular fa-heart"></i></span>
                 <% end %>
                 <span><%= Like.where(post_id: post.id).count %></span>
             </div>

@@ -1,34 +1,106 @@
 <div class="user-iconWrap u-mb40">
-<div class="user-icon">
-    <img src="/user_images/<%= @user.image_name %>?t=<%= current_user.updated_at.to_i %>" width="80" />
+    <div class="user-icon user-icon--bg">
+        <img src="/user_images/<%= @user.image_name %>?t=<%= current_user&.updated_at.to_i %>" width="80" />
+    </div>
+    <p class="user-name user-name--bg">@<%= @user.name %></p>
+    <% if logged_in? && @user == current_user %>
+    <div class="common-linkWrap">
+        <div><%= link_to "編集", edit_user_path, class: 'common-link-edit' %></div>
+        <div><%= link_to "削除", user_path(@user), class: 'common-link-delete', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %></div>
+    </div>
+    <% end %>
 </div>
-<p class="user-name">@<%= @user.name %></p>
+<div class="u-mb40">
+    <h2>投稿一覧</h2>
+    <div class="post-list">
+        <% if @user.posts.present? %>
+        <% @user.posts.each do |post| %>
+        <div class="post-item common-post-item">
+            <div class="post-content">
+                <div class="user-iconWrap">
+                    <div class="user-icon">
+                        <img src="/user_images/<%= post.user.image_name %>?t=<%= current_user&.updated_at.to_i %>" width="80" />
+                    </div>
+                    <p class="user-name">@<%= post.user.name %></p>
+                </div>
+                <div class="post-txtWrap">
+                    <%= link_to post do %>
+                    <p class="post-txt"><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="post-bottom">
+                <div class="post-like">
+                    <% if post.user_id != current_user&.id %>
+                    <% if like = post.likes.find_by(user_id: current_user&.id) %>
+                    <%= link_to post_like_path(post_id: post.id, id: like.id), data: { "turbo-method": :delete } do %>
+                    <span><i class="fa-solid fa-heart"></i></span>
+                    <% end %>
+                    <% else %>
+                    <%= link_to post_likes_path(post.id), data: { "turbo-method": :post } do %>
+                    <span><i class="fa-regular fa-heart"></i></span>
+                    <% end %>
+                    <% end %>
+                    <% else %>
+                    <span><i class="fa-regular fa-heart"></i></span>
+                    <% end %>
+                    <span><%= Like.where(post_id: post.id).count %></span>
+                </div>
+                <div class="post-comment">
+                    <span><i class="fa-regular fa-comment-dots"></i></span>
+                    <span><%= post.post_comments.count %>件</span>
+                </div>
+            </div>
+        </div>
+        <% end %>
+        <% else %>
+        <p class="common-none">投稿はありません</p>
+        <% end %>
+    </div>
 </div>
-<% if logged_in? && @user == current_user %>
-<div><%= link_to "編集", edit_user_path %></div>
-<div><%= link_to "削除", user_path(@user), data: { turbo_method: :delete } %></div>
-<% end %>
-<p>投稿一覧</p>
+<h2>いいね一覧</h2>
 <div class="post-list">
-    <% @user.posts.each do |post| %>
-        <div class="post-item">
-            <%= link_to post do %>
-                <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
+    <% if @like_posts.present? %>
+    <% @like_posts.each do |post| %>
+    <div class="post-item common-post-item">
+        <div class="post-content">
+            <%= link_to user_path(post.user), class: 'user-iconWrap' do %>
+            <div class="user-icon">
+                <img src="/user_images/<%= post.user.image_name %>?t=<%= current_user&.updated_at.to_i %>" width="80" />
+            </div>
+            <p class="user-name">@<%= post.user.name %></p>
+            <% end %>
+            <%= link_to post_path(post), class: 'post-txtWrap' do %>
+            <p class="post-txt"><%= safe_join(post.content.split("\n"),tag(:br)) %></p>
             <% end %>
         </div>
+        <div class="post-bottom">
+            <div class="post-like">
+                <% if post.user_id != current_user&.id %>
+                <% if like = post.likes.find_by(user_id: current_user&.id) %>
+                <%= link_to post_like_path(post_id: post.id, id: like.id), data: { "turbo-method": :delete } do %>
+                <span><i class="fa-solid fa-heart"></i></span>
+                <% end %>
+                <% else %>
+                <%= link_to post_likes_path(post.id), data: { "turbo-method": :post } do %>
+                <span><i class="fa-regular fa-heart"></i></span>
+                <% end %>
+                <% end %>
+                <% else %>
+                <span><i class="fa-regular fa-heart"></i></span>
+                <% end %>
+                <span><%= Like.where(post_id: post.id).count %></span>
+            </div>
+            <div class="post-comment">
+                <span><i class="fa-regular fa-comment-dots"></i></span>
+                <span><%= post.post_comments.count %>件</span>
+            </div>
+        </div>
+    </div>
     <% end %>
 </div>
-<p>いいね一覧</p>
-<div class="like-list">
-    <% if @like_posts.present? %>
-        <% @like_posts.each do |post| %>
-            <div class="like-item">
-                <%= link_to post_path(post) do %>
-                    <p><%= safe_join(post.content.split("\n"),tag(:br)) %>（<%= post.user.name %>）</p>
-                <% end %>
-            </div>
-        <% end %>
-    <% else %>
-    <p>いいねした投稿はありません。</p>
-    <% end %>
+<% else %>
+<p class="common-none">いいねした投稿はありません</p>
+<% end %>
 </div>

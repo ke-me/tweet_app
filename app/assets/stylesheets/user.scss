@@ -1,9 +1,15 @@
 @import "setting";
 
+.common-none {
+  text-align: center;
+  font-size: 14px;
+}
+
 .user-iconWrap {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .user-icon {
@@ -19,7 +25,49 @@
   }
 }
 
+.user-icon--bg {
+  width: 120px;
+}
+
 .user-name {
   color: $color_bl;
   font-size: 12px;
+}
+
+.user-name--bg {
+  font-size: 16px;
+}
+
+.user-item {
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.user-iconWrap-list {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.user-areaWrap {
+  background-color: $color_wh;
+  padding: 8px;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.user-area label {
+  display: block;
+  margin-bottom: 4px;
+  color: $color_gy_50;
+  font-size: 12px;
+}
+
+.user-area input {
+  width: 100%;
+  border: solid 1px $color_gy_50;
+  margin-bottom: 8px;
+  padding: 8px;
 }

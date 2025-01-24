@@ -1,24 +1,28 @@
-<p>ユーザー登録</p>
-<%= form_with model: @user do |form| %>
-    <div>
+<div class="user-areaWrap">
+    <h2>ユーザー登録</h2>
+    <%= form_with model: @user do |form| %>
+    <div class="user-area">
         <%= form.label :name, "ユーザー名" %>
         <%= form.text_field :name %>
     </div>
-    <div>
+    <div class="user-area">
         <%= form.label :email, "メールアドレス" %>
         <%= form.text_field :email %>
     </div>
-    <div>
+    <div class="user-area">
         <%= form.label :image_name, "アイコン画像" %>
-        <%= form.file_field :image_name %>
+        <%= form.file_field :image_name
+  %>
     </div>
-    <div>
+    <div class="user-area">
         <%= form.label :password, "パスワード" %>
         <%= form.password_field :password %>
     </div>
-    <div>
+    <div class="user-area">
         <%= form.label :password_confirmation, "パスワード（確認）" %>
-        <%= form.password_field :password_confirmation %>
+        <%=
+  form.password_field :password_confirmation %>
     </div>
-    <%= form.submit "登録" %>
-<% end %>
+    <%= form.submit "登録", class: 'common-post-btn' %>
+    <% end %>
+</div>

@@ -1,66 +1,75 @@
-
-    <div class="post-item">
-        <div class="post-content">
-            <%= link_to user_path(@post.user), class: 'user-iconWrap' do %>
-                <div class="user-icon">
-                    <img src="/user_images/<%= @post.user.image_name %>?t=<%= current_user.updated_at.to_i %>" width="80" />
-                </div>
-                <p class="user-name">@<%= @post.user.name %></p>
+<div class="post-item common-post-item">
+    <div class="post-content">
+        <%= link_to user_path(@post.user), class: 'user-iconWrap' do %>
+        <div class="user-icon">
+            <img src="/user_images/<%= @post.user.image_name %>?t=<%= current_user.updated_at.to_i %>" width="80" />
+        </div>
+        <p class="user-name">@<%= @post.user.name %></p>
+        <% end %>
+        <div class="post-txtWrap">
+            <p class="post-txt">
+                <%= safe_join(@post.content.split("\n"),tag(:br)) %>
+            </p>
+        </div>
+    </div>
+    <% if current_user && @post.user == current_user %>
+    <div class="common-linkWrap">
+        <%= link_to "削除", post_path(@post), class: 'common-link-delete', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } %>
+    </div>
+    <% end %>
+    <div class="post-bottom">
+        <div class="post-like">
+            <% if @post.user_id != current_user.id %> <% if
+      @post.liked_by?(current_user) %> <%= link_to post_like_path(@post.id),
+      data: { "turbo-method": :delete } do %>
+            <span><i class="fa-solid fa-heart"></i></span>
+            <% end %> <% else %> <%= link_to post_likes_path(@post.id), data: {
+      "turbo-method": :post } do %>
+            <span><i class="fa-regular fa-heart"></i></span>
+            <% end %> <% end %> <% else %>
+            <span><i class="fa-regular fa-heart"></i></span>
             <% end %>
-            <div class="post-txtWrap">
-                <p class="post-txt"><%= safe_join(@post.content.split("\n"),tag(:br)) %></p>
-            </div>
+            <span><%= Like.where(post_id: @post.id).count %></span>
         </div>
-        <div class="post-bottom">
-            <div class="post-like">
-                <% if @post.user_id != current_user.id %>
-    <% if @post.liked_by?(current_user) %>
-        <%= link_to post_like_path(@post.id), data: { "turbo-method": :delete } do %>
-                            <span><i class="fa-solid fa-heart"></i></span>
-                        <% end %>
-                    <% else %>
-        <%= link_to post_likes_path(@post.id), data: { "turbo-method": :post } do %>
-                            <span><i class="fa-regular fa-heart"></i></span>
-                        <% end %>
-                    <% end %>
-                <% else %>
-                    <span><i class="fa-regular fa-heart"></i></span>
-                <% end %>
-<span><%= Like.where(post_id: @post.id).count %></span>
-            </div>
-            <div class="post-comment">
-                <span><i class="fa-regular fa-comment-dots"></i></span>
-                <span><%= @post.post_comments.count %>件</span>
-            </div>
+        <div class="post-comment">
+            <span><i class="fa-regular fa-comment-dots"></i></span>
+            <span><%= @post.post_comments.count %>件</span>
         </div>
+    </div>
 </div>
 
-<div class="post-list">
+<div class="comment-list">
     <% @post.post_comments.each do |post_comment| %>
-        <div class="post-item">
-            <div class="post-content">
-                <%= link_to user_path(post_comment.user), class: 'user-iconWrap' do %>
-                    <div class="user-icon">
-                        <img src="/user_images/<%= post_comment.user.image_name %>?t=<%= post_comment.user.updated_at.to_i %>" width="80" />
-                    </div>
-                    <p class="user-name">@<%= post_comment.user.name %></p>
-                <% end %>
-                <div class="post-txtWrap">
-                    <p class="post-txt"><%= safe_join(post_comment.comment.split("\n"),tag(:br)) %></p>
-                </div>
+    <div class="comment-item common-post-item">
+        <div class="post-content">
+            <%= link_to user_path(post_comment.user), class: 'user-iconWrap' do %>
+            <div class="user-icon">
+                <img src="/user_images/<%= post_comment.user.image_name %>?t=<%= post_comment.user.updated_at.to_i %>" width="80" />
             </div>
-            <% if current_user && post_comment.user == current_user %>
-                <div><%= link_to "削除", post_post_comment_path(post_comment.post, post_comment), data: { turbo_method: :delete } %></div>
+            <p class="user-name">@<%= post_comment.user.name %></p>
             <% end %>
+            <div class="post-txtWrap">
+                <p class="post-txt">
+                    <%= safe_join(post_comment.comment.split("\n"),tag(:br)) %>
+                </p>
+            </div>
         </div>
+        <% if current_user && post_comment.user == current_user %>
+        <div class="common-linkWrap">
+            <%= link_to "削除", post_post_comment_path(post_comment.post,
+      post_comment), class: 'common-link-delete', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？'} %>
+        </div>
+        <% end %>
+    </div>
     <% end %>
 </div>
 
-<div>
-  <%= form_with model: [@post, @post_comment] do |form| %>
-    <%= form.label :comment, "コメント" %>
-    <%= form.text_area :comment %>
-    <%= form.submit "投稿する" %>
-  <% end %>
+<div class="comment-item common-post-item">
+    <%= form_with model: [@post, @post_comment] do |form| %>
+    <div class="comment-area">
+        <%= form.label :comment, "コメントを投稿する" %>
+        <%= form.text_area :comment %>
+    </div>
+    <%= form.submit "POST", class: 'common-post-btn' %>
+    <% end %>
 </div>
-

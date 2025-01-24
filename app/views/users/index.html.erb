@@ -1,9 +1,12 @@
 <div class="user-list">
+    <% @users.each do |user| %>
     <div class="user-item">
-        <% @users.each do |user| %>
-            <%= link_to user do %>
-                <p><%= user.name %></p>
-            <% end %>
+        <%= link_to user, class: 'user-iconWrap-list' do %>
+        <div class="user-icon">
+            <img src="/user_images/<%= user.image_name %>?t=<%= current_user&.updated_at.to_i %>" width="80" />
+        </div>
+        <p class="user-name">@<%= user.name %></p>
         <% end %>
     </div>
+    <% end %>
 </div>
